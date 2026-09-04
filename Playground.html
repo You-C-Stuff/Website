@@ -4731,6 +4731,9 @@ function _runSlotMachine(username, bet, petObj){
     } else {
       resultEl.style.color='#f77';coinsEl.style.color='#f77';
       coinsEl.textContent='-'+bet+' 🪙 lost';
+      setTimeout(()=>{
+        sendBotMsg('💸 @'+username+' gambled '+bet+' 🪙 and lost it all! Better luck next time...');
+      },800);
       if(petObj)petObj.say('😢 Lost it all...');
     }
     const dismissDelay=multiplier>=50?6000:4000;
