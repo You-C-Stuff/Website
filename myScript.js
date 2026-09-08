@@ -10,6 +10,8 @@ const COMMISSION_PRICES = {
     Toontuber: {
         types:  { 'Simple': 30, 'Half Body': 80, 'Full Body': 100 },
         addOns: { 'Set': 20, 'Mute/Deafen': 20 },
+        // Toontuber Emotes: multiplier applied to base type price
+        toontuberEmotes: { '1': 1, '2': 2, '3': 3, '4 or more': 4 },
     },
     Animation: {
         types:  { 'Sketch': 60, 'Flat Colours': 100, 'Shaded': 200 },
@@ -123,6 +125,17 @@ function updatePriceEstimate() {
         basePrice = config.types[typeVal];
     }
     total = basePrice;
+
+    // Toontuber Emotes: multiply base price by number of emotes
+    if (commissionType === 'Toontuber' && config.toontuberEmotes) {
+        var toonEmoteEl = document.getElementById('toontuberEmotes');
+        var toonEmoteQty = toonEmoteEl ? toonEmoteEl.value : '';
+        if (!toonEmoteQty) { priceEl.textContent = '—'; return; }
+        if (config.toontuberEmotes[toonEmoteQty] !== undefined) {
+            total = basePrice * config.toontuberEmotes[toonEmoteQty];
+            if (toonEmoteQty === '4 or more') isPlusPrice = true;
+        }
+    }
 
     // Add-ons
     if (config.addOns) {
